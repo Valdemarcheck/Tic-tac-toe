@@ -8,11 +8,13 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 30px;
 }
 
-.gameboard {
+.game-board {
   border: 1px solid black;
   min-width: 300px;
   min-height: 300px;
@@ -22,4 +24,12 @@ body {
 
 .tile {
   border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+}
+
+.tile span {
+  user-select: none;
 }
