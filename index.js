@@ -21,10 +21,16 @@ const player1 = Player("X", "Player 1");
 const player2 = Player("O", "Player 2");
 
 const gameManager = ((player1, player2) => {
-  let currentPlayer = player1;
-  let tiles = null;
-  let tilesArray = Array(9).fill("");
-  let gameEnded = false;
+  let currentPlayer;
+  let tiles;
+  let tilesArray;
+  let gameEnded;
+
+  const _initializePublicVariables = () => {
+    currentPlayer = player1;
+    tilesArray = Array(9).fill("");
+    gameEnded = false;
+  };
 
   const _updateTilesArray = () => {
     tilesArray = [...tiles].map((element) => {
@@ -38,6 +44,10 @@ const gameManager = ((player1, player2) => {
       board.append(tile.element);
     }
     tiles = board.querySelectorAll(".tile");
+  };
+
+  const _switchCurrentPlayer = () => {
+    currentPlayer = currentPlayer === player1 ? player2 : player1;
   };
 
   const _findWinPattern = (tilesArray, step, wideness) => {
@@ -103,12 +113,11 @@ const gameManager = ((player1, player2) => {
 
     element.append(signLiteral);
     element.setAttribute("data-sign", currentPlayer.sign);
-    currentPlayer = currentPlayer === player1 ? player2 : player1;
 
     _updateTilesArray();
   };
 
-  const _announceTurn = () => {
+  const _announceCurrentPlayer = () => {
     announcer.textContent = `${currentPlayer.name}'s turn`;
   };
 
@@ -121,8 +130,9 @@ const gameManager = ((player1, player2) => {
   };
 
   const startGame = () => {
+    _initializePublicVariables();
     _setupBoard();
-    _announceTurn();
+    _announceCurrentPlayer();
   };
 
   const playRound = (e) => {
@@ -142,7 +152,8 @@ const gameManager = ((player1, player2) => {
         _announceDraw();
         gameEnded = true;
       } else {
-        _announceTurn();
+        _switchCurrentPlayer();
+        _announceCurrentPlayer();
       }
     }
   };
