@@ -28,6 +28,11 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 3rem;
+  cursor: pointer;
+}
+
+.tile.filled {
+  cursor: default;
 }
 
 .tile span {
