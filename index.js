@@ -50,7 +50,7 @@ const gameManager = ((player1, player2) => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
   };
 
-  const _findWinPattern = (tilesArray, step, wideness) => {
+  const _checkPattern = (tilesArray, step, wideness) => {
     for (let i = 0; i < tilesArray.length; i += wideness) {
       const tile1 = tilesArray[i];
       const tile2 = tilesArray[i + step];
@@ -67,11 +67,11 @@ const gameManager = ((player1, player2) => {
   };
 
   const _checkRow = (tilesArray) => {
-    return _findWinPattern(tilesArray, 1, 3);
+    return _checkPattern(tilesArray, 1, 3);
   };
 
   const _checkColumn = (tilesArray) => {
-    return _findWinPattern(tilesArray, 3, 1);
+    return _checkPattern(tilesArray, 3, 1);
   };
 
   const _checkBasicConditions = (tilesArray) => {
