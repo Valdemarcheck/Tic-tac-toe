@@ -5,13 +5,33 @@
 }
 
 body {
+  padding: 30px 0;
   width: 100vw;
   height: 100vh;
+  display: grid;
+  grid-template-rows: 100px 1fr 100px;
+  gap: 50px;
+  align-items: center;
+}
+
+header,
+footer,
+main {
+  background-color: aqua;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 10px;
+}
+
+main {
+  padding: 10px 0;
+}
+
+header,
+footer {
+  height: 100%;
 }
 
 .game-board {
