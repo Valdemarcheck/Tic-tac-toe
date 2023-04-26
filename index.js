@@ -6,6 +6,18 @@ startButton.addEventListener("click", () => gameManager.startGame());
 
 const announcer = document.querySelector(".announcer");
 
+const modeSelect = document.querySelector(".mode-row select");
+const difficultyRow = document.querySelector(".difficulty-row");
+const difficultySelect = difficultyRow.querySelector("select");
+modeSelect.addEventListener("change", () => {
+  let mode = modeSelect.options[modeSelect.selectedIndex].value;
+  if (mode === "personVScomputer") {
+    difficultyRow.classList.remove("hide");
+  } else {
+    difficultyRow.classList.add("hide");
+  }
+});
+
 const Player = function (sign, name) {
   return { name, sign };
 };
@@ -20,10 +32,7 @@ const Tile = function () {
   return { element, sign };
 };
 
-const player1 = Player("X", "Player 1");
-const player2 = Player("O", "Player 2");
-
-const gameManager = ((player1, player2) => {
+const gameManager = (() => {
   let currentPlayer;
   let tiles;
   let tilesArray;
@@ -138,6 +147,7 @@ const gameManager = ((player1, player2) => {
   };
 
   const startGame = () => {
+    let settings = _getSettings();
     _clearBoard();
     _initializePublicVariables();
     _setupBoard();
@@ -168,6 +178,4 @@ const gameManager = ((player1, player2) => {
   };
 
   return { playRound, startGame };
-})(player1, player2);
-
-gameManager.startGame();
+})();

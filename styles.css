@@ -186,6 +186,10 @@ footer {
   aspect-ratio: 1/1;
 }
 
+.hide {
+  display: none;
+}
+
 @media (max-width: 500px) {
   .game-section {
     flex-direction: column;
