@@ -250,7 +250,6 @@ const gameManager = (() => {
 
       if (!gameEnded) {
         _switchCurrentPlayer();
-        _announceCurrentPlayer();
       }
     }
   };
