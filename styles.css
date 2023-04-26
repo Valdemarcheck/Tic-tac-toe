@@ -17,7 +17,6 @@ body {
 header,
 footer,
 main {
-  background-color: aqua;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -34,21 +33,79 @@ footer {
   height: 100%;
 }
 
+button {
+  width: 100px;
+  padding: 3px 30px;
+  border-radius: 10px;
+  border: none;
+}
+
+.vertical,
+.horizontal {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.center {
+  align-items: center;
+}
+
+.game-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px 30px;
+}
+
 .game-board {
-  border: 1px solid black;
-  min-width: 300px;
-  min-height: 300px;
+  flex: 1;
+  padding: 10px;
+  max-width: 400px;
+  aspect-ratio: 1/1;
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 5px;
+  border-radius: 1px;
+}
+
+.settings {
+  flex: 1;
+  max-width: 250px;
+  padding: 20px;
+  background-color: beige;
+  display: grid;
+  grid-template-rows: 30px 1fr;
+  place-items: center;
+  gap: 20px;
+  border-radius: 5px;
+}
+
+.outer-row {
+  padding: 30px 10px;
+  background-color: rgb(111, 111, 111);
+  height: auto;
+  justify-content: space-evenly;
+}
+
+.row.horizontal {
+  padding: 5px;
+  border-bottom: 1px solid black;
 }
 
 .tile {
-  border: 1px solid red;
+  border: 1px solid rgb(0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .tile.filled {

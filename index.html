@@ -13,8 +13,38 @@
       <h1>Tic-Tac-Toe</h1>
     </header>
     <main>
-      <div class="game-board"></div>
-      <h1 class="announcer"></h1>
+      <div class="game-section">
+        <div class="game-board"></div>
+        <div class="settings">
+          <h2>Settings</h2>
+          <div class="outer-row vertical">
+            <form class="row vertical" action="" id="settings-form">
+              <div class="row horizontal">
+                <label for="mode">Mode</label>
+                <select name="mode" id="mode">
+                  <option value="personVSperson" selected>
+                    Against person
+                  </option>
+                  <option value="personVScomputer">Against AI</option>
+                </select>
+              </div>
+              <div class="row horizontal">
+                <label for="difficulty">Difficulty</label>
+                <select name="difficulty" id="difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </form>
+            <div class="row vertical center">
+              <button class="start">Start</button>
+              <button class="reset">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="announcer"></p>
     </main>
     <footer>
       <a
