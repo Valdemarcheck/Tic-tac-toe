@@ -44,14 +44,15 @@ label {
 }
 
 body {
+  background-color: var(--main-white);
+  align-items: center;
+  color: var(--main-black);
   padding: 30px 0;
   width: 100vw;
   height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: min(50px, 4vh);
-  align-items: center;
-  color: var(--main-black);
 }
 
 header,
