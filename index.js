@@ -18,19 +18,50 @@ modeSelect.addEventListener("change", () => {
   }
 });
 
-const Player = function (sign, name) {
-  return { name, sign };
+const Player = function (sign, name, type) {
+  return { name, sign, type };
 };
 
-const ComputerPlayer = function (sign, name, difficulty) {
-  let pcPlayer = Player(sign, name);
-  return pcPlayer;
+const ComputerPlayer = function (sign, name, type, difficulty) {
+  let pcPlayer = Player(sign, name, type);
+
+  let _setTile = (tile) => {
+    const signLiteral = document.createElement("span");
+    signLiteral.textContent = sign;
+
+    tile.append(signLiteral);
+    tile.setAttribute("data-sign", sign);
+    tile.classList.add("filled");
+  };
+
+  let playComputerRound = () => {
+    let tiles = board.querySelectorAll(".tile");
+    let emptyTiles = Array.from(tiles).filter((tile) => {
+      return !tile.classList.contains("filled");
+    });
+    let emptyTilesIndexes = emptyTiles.map((tile) => {
+      return tile.getAttribute("data-index");
+    });
+
+    let randomIndex = Math.floor(Math.random() * emptyTilesIndexes.length);
+    let tileIndex = emptyTilesIndexes[randomIndex];
+    // console.log(emptyTilesIndexes, emptyTiles, randomIndex, tileIndex);
+
+    emptyTiles.forEach((tile) => {
+      if (tile.getAttribute("data-index") == tileIndex) {
+        _setTile(tile);
+      }
+    });
+  };
+
+  return Object.assign(pcPlayer, { playComputerRound });
 };
 
-const Tile = function () {
+const Tile = function (i) {
   let element = document.createElement("div");
   element.classList.add("tile");
   element.setAttribute("data-sign", "");
+  element.setAttribute("data-index", i);
 
   let sign = "";
 
@@ -57,13 +88,13 @@ const gameManager = (() => {
   const _setupPlayers = (settings) => {
     if (settings.mode === "personVSperson") {
       players = {
-        player1: Player("X", "Player 1"),
-        player2: Player("O", "Player 2"),
+        player1: Player("X", "Player 1", "player"),
+        player2: Player("O", "Player 2", "player"),
       };
     } else {
       players = {
-        player1: Player("X", "Player"),
-        player2: ComputerPlayer("O", "PC"),
+        player1: Player("X", "Player", "player"),
+        player2: ComputerPlayer("O", "PC", "pc"),
       };
     }
   };
@@ -82,7 +113,7 @@ const gameManager = (() => {
 
   const _setupBoard = () => {
     for (let i = 0; i < 9; i++) {
-      let tile = Tile.call(currentPlayer);
+      let tile = Tile(i);
       board.append(tile.element);
     }
     tiles = board.querySelectorAll(".tile");
@@ -138,8 +169,8 @@ const gameManager = (() => {
     );
   };
 
-  const _checkDraw = (won) => {
-    return !won && !tilesArray.includes("");
+  const _checkDraw = () => {
+    return !tilesArray.includes("");
   };
 
   const _checkWin = () => {
@@ -148,6 +179,8 @@ const gameManager = (() => {
       _checkRow(tilesArray),
       _checkColumn(tilesArray),
     ];
+
+    console.log(winConditions);
 
     return winConditions.includes(true);
   };
@@ -161,8 +194,6 @@ const gameManager = (() => {
     element.append(signLiteral);
     element.setAttribute("data-sign", currentPlayer.sign);
     element.classList.add("filled");
-
-    _updateTilesArray();
   };
 
   const _announceCurrentPlayer = () => {
@@ -186,23 +217,42 @@ const gameManager = (() => {
     _announceCurrentPlayer();
   };
 
+  const _chooseFurtherAction = (won) => {
+    if (won) {
+      _announceWinner();
+      gameEnded = true;
+    } else if (_checkDraw()) {
+      _announceDraw();
+      gameEnded = true;
+    }
+  };
+
   const playRound = (e) => {
-    if (
-      !gameEnded &&
-      e.target.classList.contains("tile") &&
-      e.target.children.length === 0
-    ) {
-      _setTile(e);
+    let hasCurrentPlayerWon;
+    if (currentPlayer.type === "player") {
+      if (
+        !gameEnded &&
+        e.target.classList.contains("tile") &&
+        e.target.children.length === 0
+      ) {
+        _setTile(e);
+        _updateTilesArray();
+      }
 
-      const hasCurrentPlayerWon = _checkWin();
+      hasCurrentPlayerWon = _checkWin();
+      _chooseFurtherAction(hasCurrentPlayerWon);
 
-      if (hasCurrentPlayerWon) {
-        _announceWinner();
-        gameEnded = true;
-      } else if (_checkDraw(hasCurrentPlayerWon)) {
-        _announceDraw();
-        gameEnded = true;
-      } else {
+      if (!gameEnded) {
+        _switchCurrentPlayer();
+        _announceCurrentPlayer();
+        currentPlayer.playComputerRound();
+        _updateTilesArray();
+
+        hasCurrentPlayerWon = _checkWin();
+        _chooseFurtherAction(hasCurrentPlayerWon);
+      }
+
+      if (!gameEnded) {
         _switchCurrentPlayer();
         _announceCurrentPlayer();
       }
