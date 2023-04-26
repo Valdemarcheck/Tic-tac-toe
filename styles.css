@@ -48,8 +48,8 @@ body {
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-rows: 100px 1fr 100px;
-  gap: 50px;
+  grid-template-rows: auto 1fr auto;
+  gap: min(50px, 4vh);
   align-items: center;
   color: var(--main-black);
 }
@@ -82,6 +82,9 @@ footer {
 
 .horizontal {
   gap: 20px;
+  margin: 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 2px solid var(--main-black);
 }
 
 .vertical {
@@ -136,12 +139,6 @@ footer {
   gap: 20px;
 }
 
-.row.horizontal {
-  margin: 10px 0;
-  padding-bottom: 5px;
-  border-bottom: 2px solid var(--main-black);
-}
-
 .start {
   background-color: var(--accent);
   color: var(--main-white);
@@ -176,7 +173,7 @@ footer {
 
 .github-link {
   background-color: var(--main-black);
-  height: 50%;
+  height: 48px;
   aspect-ratio: 1/1;
   border-radius: 7px;
   display: flex;
