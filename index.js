@@ -69,6 +69,7 @@ const Tile = function (i) {
 };
 
 const gameManager = (() => {
+  let mode;
   let players = {};
   let currentPlayer;
   let tiles;
@@ -86,7 +87,8 @@ const gameManager = (() => {
   };
 
   const _setupPlayers = (settings) => {
-    if (settings.mode === "personVSperson") {
+    mode = settings.mode;
+    if (mode === "personVSperson") {
       players = {
         player1: Player("X", "Player 1", "player"),
         player2: Player("O", "Player 2", "player"),
@@ -208,15 +210,6 @@ const gameManager = (() => {
     announcer.textContent = `Congratulations! ${currentPlayer.name} has won!`;
   };
 
-  const startGame = () => {
-    let settings = _getSettings();
-    _setupPlayers(settings);
-    _clearBoard();
-    _setupBoard();
-    _initializePublicVariables();
-    _announceCurrentPlayer();
-  };
-
   const _chooseFurtherAction = (won) => {
     if (won) {
       _announceWinner();
@@ -234,22 +227,46 @@ const gameManager = (() => {
     _chooseFurtherAction(_checkWin());
   };
 
+  const startGame = () => {
+    let settings = _getSettings();
+    _setupPlayers(settings);
+    _clearBoard();
+    _setupBoard();
+    _initializePublicVariables();
+    _announceCurrentPlayer();
+  };
+
   const playRound = (e) => {
-    if (
-      !gameEnded &&
-      e.target.classList.contains("tile") &&
-      e.target.children.length === 0
-    ) {
-      _setTile(e);
-      _updateTilesArray();
-      _chooseFurtherAction(_checkWin());
+    if (!gameEnded && mode === "personVScomputer") {
+      if (
+        e.target.classList.contains("tile") &&
+        e.target.children.length === 0
+      ) {
+        _setTile(e);
+        _updateTilesArray();
+        _chooseFurtherAction(_checkWin());
 
-      if (!gameEnded) {
-        _playComputerRound();
+        if (!gameEnded) {
+          _playComputerRound();
+        }
+
+        if (!gameEnded) {
+          _switchCurrentPlayer();
+        }
       }
+    } else {
+      if (
+        e.target.classList.contains("tile") &&
+        e.target.children.length === 0
+      ) {
+        _setTile(e);
+        _updateTilesArray();
+        _chooseFurtherAction(_checkWin());
 
-      if (!gameEnded) {
-        _switchCurrentPlayer();
+        if (!gameEnded) {
+          _switchCurrentPlayer();
+          _announceCurrentPlayer();
+        }
       }
     }
   };
