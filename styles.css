@@ -117,19 +117,27 @@ footer {
   box-shadow: var(--section-shadow);
   border-radius: 10px;
   max-width: 250px;
-  padding: 20px 10px;
+  min-height: 250px;
+  padding: 30px 10px;
   flex: 1;
   display: grid;
   grid-template-rows: 3rem 1fr;
   place-items: center;
+  gap: 20px;
 }
 
 .outer-row {
-  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.outer-row,
+.outer-row > * {
+  gap: 20px;
 }
 
 .row.horizontal {
-  margin: 20px 0;
+  margin: 10px 0;
   padding-bottom: 5px;
   border-bottom: 2px solid var(--main-black);
 }
@@ -140,7 +148,6 @@ footer {
   padding: 8px 40px;
   border-radius: 5px;
   border: none;
-  margin-top: 30px;
   font-size: 1.4rem;
 }
 
@@ -180,4 +187,26 @@ footer {
 .github-link img {
   height: 80%;
   aspect-ratio: 1/1;
+}
+
+@media (max-width: 500px) {
+  .game-section {
+    flex-direction: column;
+  }
+
+  .game-board {
+    min-height: 300px;
+  }
+
+  .settings {
+    max-width: none;
+    padding: 20px 15px;
+    gap: 10px;
+  }
+
+  .outer-row {
+    flex-direction: row;
+    gap: 20px;
+    padding: 0;
+  }
 }
