@@ -2,6 +2,42 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  color: inherit;
+}
+
+:root {
+  --main-black: #262626;
+  --main-white: #f8f8f8;
+  --accent: #9ccee2;
+  --lighter-black: #474747;
+  --cell-border: #aeaeae;
+  --red-gradient: linear-gradient(
+    90deg,
+    rgba(239, 118, 122, 1) 0%,
+    rgba(234, 57, 63, 1) 100%
+  );
+  --purple-gradient: linear-gradient(
+    90deg,
+    rgba(88, 82, 186, 1) 0%,
+    rgba(125, 122, 188, 1) 100%
+  );
+
+  --section-shadow: 0 4px 10px #2626264d;
+
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: normal;
+}
+
+label {
+  font-size: 1.2rem;
 }
 
 body {
@@ -12,6 +48,7 @@ body {
   grid-template-rows: 100px 1fr 100px;
   gap: 50px;
   align-items: center;
+  color: var(--main-black);
 }
 
 header,
@@ -26,6 +63,7 @@ main {
 
 main {
   padding: 10px 0;
+  gap: 50px;
 }
 
 header,
@@ -42,6 +80,7 @@ footer {
 
 .vertical {
   flex-direction: column;
+  gap: 10px;
 }
 
 .center {
@@ -53,29 +92,30 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px 30px;
+  gap: 20px;
 }
 
 .game-board {
-  flex: 1;
+  box-shadow: var(--section-shadow);
+  border-radius: 10px;
   padding: 10px;
   max-width: 400px;
   aspect-ratio: 1/1;
+  flex: 1;
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
   gap: 5px;
-  border-radius: 1px;
 }
 
 .settings {
-  flex: 1;
+  box-shadow: var(--section-shadow);
+  border-radius: 10px;
   max-width: 250px;
   padding: 20px;
+  flex: 1;
   display: grid;
   grid-template-rows: 30px 1fr;
   place-items: center;
-  gap: 20px;
-  border-radius: 5px;
 }
 
 .outer-row {
@@ -84,21 +124,23 @@ footer {
 
 .row.horizontal {
   margin: 10px 0;
-  padding: 5px;
-  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+  border-bottom: 2px solid var(--main-black);
 }
 
 .start {
-  width: 100px;
-  padding: 5px 30px;
-  border-radius: 10px;
+  background-color: var(--accent);
+  color: var(--main-white);
+  padding: 8px 40px;
+  border-radius: 5px;
   border: none;
   margin-top: 30px;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
 .tile {
-  border: 1px solid rgb(0, 0, 0);
+  border: 1px solid var(--cell-border);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,5 +159,20 @@ footer {
 
 .announcer {
   font-size: 1.5rem;
-  color: rgb(173, 173, 173);
+  color: var(--lighter-black);
+}
+
+.github-link {
+  background-color: var(--main-black);
+  height: 50%;
+  aspect-ratio: 1/1;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.github-link img {
+  height: 80%;
+  aspect-ratio: 1/1;
 }
