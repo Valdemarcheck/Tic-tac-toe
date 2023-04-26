@@ -22,6 +22,11 @@ const Player = function (sign, name) {
   return { name, sign };
 };
 
+const ComputerPlayer = function (sign, name, difficulty) {
+  let pcPlayer = Player(sign, name);
+  return pcPlayer;
+};
+
 const Tile = function () {
   let element = document.createElement("div");
   element.classList.add("tile");
@@ -33,13 +38,38 @@ const Tile = function () {
 };
 
 const gameManager = (() => {
+  let players = {};
   let currentPlayer;
   let tiles;
   let tilesArray;
   let gameEnded;
 
+  const _getSettings = () => {
+    let mode = modeSelect.options[modeSelect.selectedIndex].value;
+    let difficulty;
+    if (mode === "personVScomputer") {
+      difficulty =
+        difficultySelect.options[difficultySelect.selectedIndex].value;
+    }
+    return { mode, difficulty };
+  };
+
+  const _setupPlayers = (settings) => {
+    if (settings.mode === "personVSperson") {
+      players = {
+        player1: Player("X", "Player 1"),
+        player2: Player("O", "Player 2"),
+      };
+    } else {
+      players = {
+        player1: Player("X", "Player"),
+        player2: ComputerPlayer("O", "PC"),
+      };
+    }
+  };
+
   const _initializePublicVariables = () => {
-    currentPlayer = player1;
+    currentPlayer = players.player1;
     tilesArray = Array(9).fill("");
     gameEnded = false;
   };
@@ -63,7 +93,8 @@ const gameManager = (() => {
   };
 
   const _switchCurrentPlayer = () => {
-    currentPlayer = currentPlayer === player1 ? player2 : player1;
+    currentPlayer =
+      currentPlayer === players.player1 ? players.player2 : players.player1;
   };
 
   const _findWinPattern = (tilesArray, step, wideness) => {
@@ -148,9 +179,10 @@ const gameManager = (() => {
 
   const startGame = () => {
     let settings = _getSettings();
+    _setupPlayers(settings);
     _clearBoard();
-    _initializePublicVariables();
     _setupBoard();
+    _initializePublicVariables();
     _announceCurrentPlayer();
   };
 
