@@ -1,6 +1,9 @@
 const board = document.querySelector(".game-board");
 board.addEventListener("click", (e) => gameManager.playRound(e));
 
+const startButton = document.querySelector(".start");
+startButton.addEventListener("click", () => gameManager.startGame());
+
 const announcer = document.querySelector(".announcer");
 
 const Player = function (sign, name) {
@@ -44,6 +47,10 @@ const gameManager = ((player1, player2) => {
       board.append(tile.element);
     }
     tiles = board.querySelectorAll(".tile");
+  };
+
+  const _clearBoard = () => {
+    board.textContent = "";
   };
 
   const _switchCurrentPlayer = () => {
@@ -131,6 +138,7 @@ const gameManager = ((player1, player2) => {
   };
 
   const startGame = () => {
+    _clearBoard();
     _initializePublicVariables();
     _setupBoard();
     _announceCurrentPlayer();
