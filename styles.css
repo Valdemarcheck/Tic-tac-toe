@@ -78,15 +78,18 @@ footer {
 .horizontal {
   display: flex;
   justify-content: space-between;
+}
+
+.horizontal {
   gap: 20px;
 }
 
 .vertical {
   flex-direction: column;
-  gap: 10px;
 }
 
 .center {
+  justify-content: center;
   align-items: center;
 }
 
@@ -114,19 +117,19 @@ footer {
   box-shadow: var(--section-shadow);
   border-radius: 10px;
   max-width: 250px;
-  padding: 20px;
+  padding: 20px 10px;
   flex: 1;
   display: grid;
-  grid-template-rows: 30px 1fr;
+  grid-template-rows: 3rem 1fr;
   place-items: center;
 }
 
 .outer-row {
-  padding: 30px 10px;
+  padding: 20px 10px;
 }
 
 .row.horizontal {
-  margin: 10px 0;
+  margin: 20px 0;
   padding-bottom: 5px;
   border-bottom: 2px solid var(--main-black);
 }
@@ -142,13 +145,13 @@ footer {
 }
 
 .tile {
+  cursor: pointer;
   border: 1px solid var(--cell-border);
+  border-radius: 5px;
+  font-size: 5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3rem;
-  cursor: pointer;
-  border-radius: 5px;
 }
 
 .tile.filled {
