@@ -227,29 +227,25 @@ const gameManager = (() => {
     }
   };
 
-  const playRound = (e) => {
-    let hasCurrentPlayerWon;
-    if (currentPlayer.type === "player") {
-      if (
-        !gameEnded &&
-        e.target.classList.contains("tile") &&
-        e.target.children.length === 0
-      ) {
-        _setTile(e);
-        _updateTilesArray();
-      }
+  const _playComputerRound = () => {
+    _switchCurrentPlayer();
+    currentPlayer.playComputerRound();
+    _updateTilesArray();
+    _chooseFurtherAction(_checkWin());
+  };
 
-      hasCurrentPlayerWon = _checkWin();
-      _chooseFurtherAction(hasCurrentPlayerWon);
+  const playRound = (e) => {
+    if (
+      !gameEnded &&
+      e.target.classList.contains("tile") &&
+      e.target.children.length === 0
+    ) {
+      _setTile(e);
+      _updateTilesArray();
+      _chooseFurtherAction(_checkWin());
 
       if (!gameEnded) {
-        _switchCurrentPlayer();
-        _announceCurrentPlayer();
-        currentPlayer.playComputerRound();
-        _updateTilesArray();
-
-        hasCurrentPlayerWon = _checkWin();
-        _chooseFurtherAction(hasCurrentPlayerWon);
+        _playComputerRound();
       }
 
       if (!gameEnded) {
