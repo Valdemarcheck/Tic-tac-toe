@@ -3,6 +3,7 @@
   margin: 0;
   box-sizing: border-box;
   color: inherit;
+  font-family: inherit;
 }
 
 :root {
@@ -24,11 +25,13 @@
 
   --section-shadow: 0 4px 10px #2626264d;
 
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
 }
 
 h1 {
   font-size: 4rem;
+  font-family: "Manrope", sans-serif;
 }
 
 h2 {
@@ -136,7 +139,6 @@ footer {
   border: none;
   margin-top: 30px;
   font-size: 1.4rem;
-  font-weight: bold;
 }
 
 .tile {
