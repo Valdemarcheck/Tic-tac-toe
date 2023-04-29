@@ -67,22 +67,22 @@ body {
 
 .circle {
   position: absolute;
-  width: min(350px, 20vw);
+  width: min(350px, 25vw);
   aspect-ratio: 1/1;
   border-radius: 50%;
-  filter: blur(70px);
+  filter: blur(50px);
 }
 
 .circle.red {
   background: var(--red-gradient);
-  top: -8vw;
-  right: -6vw;
+  top: -10vw;
+  right: -10vw;
 }
 
 .circle.purple {
   background: var(--purple-gradient);
-  bottom: -8vw;
-  left: -6vw;
+  bottom: -10vw;
+  left: -10vw;
 }
 
 header,
@@ -240,6 +240,7 @@ select {
 @media (max-width: 500px) {
   .game-section {
     flex-direction: column;
+    gap: 8vh;
   }
 
   .game-board {
