@@ -197,9 +197,9 @@ select {
 .tile span {
   user-select: none;
   animation-name: appear;
-  animation-duration: 0.5s;
+  animation-duration: 0.7s;
   animation-fill-mode: both;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: cubic-bezier(0.37, 0.89, 0.52, 0.96);
 }
 
 .announcer {
