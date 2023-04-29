@@ -68,6 +68,70 @@ const Tile = function (i) {
   return { element, sign };
 };
 
+const terminalStateManager = (() => {
+  const _findWinPattern = (tilesArray, step, wideness) => {
+    for (let i = 0; i < tilesArray.length; i += wideness) {
+      const tile1 = tilesArray[i];
+      const tile2 = tilesArray[i + step];
+      const tile3 = tilesArray[i + step * 2];
+      if (
+        ![tile1, tile2, tile3].includes("") &&
+        tile1 === tile2 &&
+        tile2 === tile3
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const _checkRow = (tilesArray) => {
+    return _findWinPattern(tilesArray, 1, 3);
+  };
+
+  const _checkColumn = (tilesArray) => {
+    return _findWinPattern(tilesArray, 3, 1);
+  };
+
+  const _checkBasicConditions = (tilesArray) => {
+    const leftDiagonal = [tilesArray[0], tilesArray[4], tilesArray[8]];
+    const rightDiagonal = [tilesArray[2], tilesArray[4], tilesArray[6]];
+
+    const allSameLeftDiagonal =
+      leftDiagonal[0] === leftDiagonal[1] &&
+      leftDiagonal[1] === leftDiagonal[2];
+    const allSameRightDiagonal =
+      rightDiagonal[0] === rightDiagonal[1] &&
+      rightDiagonal[1] === rightDiagonal[2];
+
+    return (
+      (!leftDiagonal.includes("") && allSameLeftDiagonal) ||
+      (!rightDiagonal.includes("") && allSameRightDiagonal)
+    );
+  };
+
+  const checkDraw = (tilesArray) => {
+    return !tilesArray.includes("");
+  };
+
+  const checkWin = (tilesArray) => {
+    let winConditions = [
+      _checkBasicConditions(tilesArray),
+      _checkRow(tilesArray),
+      _checkColumn(tilesArray),
+    ];
+
+    console.log(winConditions);
+
+    return winConditions.includes(true);
+  };
+
+  return {
+    checkDraw,
+    checkWin,
+  };
+})();
+
 const gameManager = (() => {
   let mode;
   let players = {};
@@ -130,63 +194,6 @@ const gameManager = (() => {
       currentPlayer === players.player1 ? players.player2 : players.player1;
   };
 
-  const _findWinPattern = (tilesArray, step, wideness) => {
-    for (let i = 0; i < tilesArray.length; i += wideness) {
-      const tile1 = tilesArray[i];
-      const tile2 = tilesArray[i + step];
-      const tile3 = tilesArray[i + step * 2];
-      if (
-        ![tile1, tile2, tile3].includes("") &&
-        tile1 === tile2 &&
-        tile2 === tile3
-      ) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const _checkRow = (tilesArray) => {
-    return _findWinPattern(tilesArray, 1, 3);
-  };
-
-  const _checkColumn = (tilesArray) => {
-    return _findWinPattern(tilesArray, 3, 1);
-  };
-
-  const _checkBasicConditions = (tilesArray) => {
-    const leftDiagonal = [tilesArray[0], tilesArray[4], tilesArray[8]];
-    const rightDiagonal = [tilesArray[2], tilesArray[4], tilesArray[6]];
-
-    const allSameLeftDiagonal =
-      leftDiagonal[0] === leftDiagonal[1] &&
-      leftDiagonal[1] === leftDiagonal[2];
-    const allSameRightDiagonal =
-      rightDiagonal[0] === rightDiagonal[1] &&
-      rightDiagonal[1] === rightDiagonal[2];
-
-    return (
-      (!leftDiagonal.includes("") && allSameLeftDiagonal) ||
-      (!rightDiagonal.includes("") && allSameRightDiagonal)
-    );
-  };
-
-  const _checkDraw = () => {
-    return !tilesArray.includes("");
-  };
-
-  const _checkWin = () => {
-    let winConditions = [
-      _checkBasicConditions(tilesArray),
-      _checkRow(tilesArray),
-      _checkColumn(tilesArray),
-    ];
-
-    console.log(winConditions);
-
-    return winConditions.includes(true);
-  };
-
   const _setTile = (e) => {
     element = e.target;
 
@@ -216,7 +223,7 @@ const gameManager = (() => {
     if (won) {
       _announceWinner();
       isThereAnyOutcome = true;
-    } else if (_checkDraw()) {
+    } else if (terminalStateManager.checkDraw(tilesArray)) {
       _announceDraw();
       isThereAnyOutcome = true;
     }
@@ -231,7 +238,7 @@ const gameManager = (() => {
     _switchCurrentPlayer();
     currentPlayer.playComputerRound();
     _updateTilesArray();
-    _chooseFurtherAction(_checkWin());
+    _chooseFurtherAction(terminalStateManager.checkWin(tilesArray));
   };
 
   const startGame = () => {
@@ -245,14 +252,15 @@ const gameManager = (() => {
   };
 
   const playRound = (e) => {
-    if (!gameEnded && mode === "personVScomputer") {
+    if (mode === "personVScomputer") {
       if (
+        !gameEnded &&
         e.target.classList.contains("tile") &&
         e.target.children.length === 0
       ) {
         _setTile(e);
         _updateTilesArray();
-        _chooseFurtherAction(_checkWin());
+        _chooseFurtherAction(terminalStateManager.checkWin(tilesArray));
 
         if (!gameEnded) {
           _playComputerRound();
@@ -264,12 +272,13 @@ const gameManager = (() => {
       }
     } else {
       if (
+        !gameEnded &&
         e.target.classList.contains("tile") &&
         e.target.children.length === 0
       ) {
         _setTile(e);
         _updateTilesArray();
-        _chooseFurtherAction(_checkWin());
+        _chooseFurtherAction(terminalStateManager.checkWin(tilesArray));
 
         if (!gameEnded) {
           _switchCurrentPlayer();
