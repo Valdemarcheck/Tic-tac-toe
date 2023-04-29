@@ -211,12 +211,19 @@ const gameManager = (() => {
   };
 
   const _chooseFurtherAction = (won) => {
+    let isThereAnyOutcome = false;
+
     if (won) {
       _announceWinner();
-      gameEnded = true;
+      isThereAnyOutcome = true;
     } else if (_checkDraw()) {
       _announceDraw();
+      isThereAnyOutcome = true;
+    }
+
+    if (isThereAnyOutcome) {
       gameEnded = true;
+      startButton.classList.add("pulse");
     }
   };
 
@@ -229,6 +236,7 @@ const gameManager = (() => {
 
   const startGame = () => {
     let settings = _getSettings();
+    startButton.classList.remove("pulse");
     _setupPlayers(settings);
     _clearBoard();
     _setupBoard();

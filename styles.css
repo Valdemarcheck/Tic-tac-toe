@@ -10,6 +10,7 @@
   --main-black: #262626;
   --main-white: #f8f8f8;
   --accent: #9ccee2;
+  --lighter-accent: #9fd8ef;
   --lighter-black: #474747;
   --cell-border: #aeaeae;
   --red-gradient: linear-gradient(
@@ -44,6 +45,8 @@ label {
 }
 
 body {
+  overflow: hidden;
+  position: relative;
   background-color: var(--main-white);
   align-items: center;
   color: var(--main-black);
@@ -53,6 +56,32 @@ body {
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: min(50px, 4vh);
+}
+
+.decorations {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.circle {
+  position: absolute;
+  width: min(350px, 20vw);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+
+.circle.red {
+  background: var(--red-gradient);
+  top: -8vw;
+  right: -6vw;
+}
+
+.circle.purple {
+  background: var(--purple-gradient);
+  bottom: -8vw;
+  left: -6vw;
 }
 
 header,
@@ -150,15 +179,6 @@ select {
   gap: 20px;
 }
 
-.start {
-  background-color: var(--accent);
-  color: var(--main-white);
-  padding: 8px 40px;
-  border-radius: 5px;
-  border: none;
-  font-size: 1.4rem;
-}
-
 .tile {
   cursor: pointer;
   border: 1px solid var(--cell-border);
@@ -201,6 +221,21 @@ select {
   display: none;
 }
 
+.start {
+  background-color: var(--accent);
+  color: var(--main-white);
+  padding: 8px 40px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.4rem;
+  transition: background-color 0.3s ease-out;
+}
+
+.start:hover {
+  animation-name: none;
+  background-color: var(--lighter-accent);
+}
+
 @media (max-width: 500px) {
   .game-section {
     flex-direction: column;
@@ -221,4 +256,22 @@ select {
     gap: 20px;
     padding: 0;
   }
+}
+
+@keyframes pulse {
+  from {
+    background-color: var(--accent);
+  }
+
+  to {
+    background-color: var(--lighter-accent);
+  }
+}
+
+.pulse {
+  animation-name: pulse;
+  animation-duration: 1s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
 }
