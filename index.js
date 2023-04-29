@@ -18,56 +18,6 @@ modeSelect.addEventListener("change", () => {
   }
 });
 
-const Player = function (sign, name, type) {
-  return { name, sign, type };
-};
-
-const ComputerPlayer = function (sign, name, type, difficulty) {
-  let pcPlayer = Player(sign, name, type);
-
-  let _setTile = (tile) => {
-    const signLiteral = document.createElement("span");
-    signLiteral.textContent = sign;
-
-    tile.append(signLiteral);
-    tile.setAttribute("data-sign", sign);
-    tile.classList.add("filled");
-  };
-
-  let playComputerRound = () => {
-    let tiles = board.querySelectorAll(".tile");
-    let emptyTiles = Array.from(tiles).filter((tile) => {
-      return !tile.classList.contains("filled");
-    });
-    let emptyTilesIndexes = emptyTiles.map((tile) => {
-      return tile.getAttribute("data-index");
-    });
-
-    let randomIndex = Math.floor(Math.random() * emptyTilesIndexes.length);
-    let tileIndex = emptyTilesIndexes[randomIndex];
-    // console.log(emptyTilesIndexes, emptyTiles, randomIndex, tileIndex);
-
-    emptyTiles.forEach((tile) => {
-      if (tile.getAttribute("data-index") == tileIndex) {
-        _setTile(tile);
-      }
-    });
-  };
-
-  return Object.assign(pcPlayer, { playComputerRound });
-};
-
-const Tile = function (i) {
-  let element = document.createElement("div");
-  element.classList.add("tile");
-  element.setAttribute("data-sign", "");
-  element.setAttribute("data-index", i);
-
-  let sign = "";
-
-  return { element, sign };
-};
-
 const terminalStateManager = (() => {
   const _findWinPattern = (tilesArray, step, wideness) => {
     for (let i = 0; i < tilesArray.length; i += wideness) {
@@ -121,8 +71,6 @@ const terminalStateManager = (() => {
       _checkColumn(tilesArray),
     ];
 
-    console.log(winConditions);
-
     return winConditions.includes(true);
   };
 
@@ -131,6 +79,81 @@ const terminalStateManager = (() => {
     checkWin,
   };
 })();
+
+const Player = function (sign, name, type) {
+  return { name, sign, type };
+};
+
+const ComputerPlayer = function (sign, name, type) {
+  let pcPlayer = Player(sign, name, type);
+
+  let _isStateTerminal = (state) => {
+    return terminalStateManager.checkWin(state);
+  };
+
+  let _getValue = (state) => {
+    if (terminalStateManager.checkDraw(state)) {
+      return 0;
+    }
+  };
+
+  let _minimax = (state) => {
+    if (_isStateTerminal(state)) {
+      return _getValue(state);
+    } else {
+      let value = -Infinity;
+
+      for (let action of _getActions(state)) {
+        value = Math.min(value, _minimax(action));
+      }
+
+      return value;
+    }
+  };
+
+  let _setTile = (tile) => {
+    const signLiteral = document.createElement("span");
+    signLiteral.textContent = sign;
+
+    tile.append(signLiteral);
+    tile.setAttribute("data-sign", sign);
+    tile.classList.add("filled");
+  };
+
+  let playComputerRound = () => {
+    let tiles = board.querySelectorAll(".tile");
+
+    let emptyTiles = Array.from(tiles).filter((tile) => {
+      return !tile.classList.contains("filled");
+    });
+
+    let emptyTilesIndexes = emptyTiles.map((tile) => {
+      return tile.getAttribute("data-index");
+    });
+
+    let randomIndex = Math.floor(Math.random() * emptyTilesIndexes.length);
+    let tileIndex = emptyTilesIndexes[randomIndex];
+
+    emptyTiles.forEach((tile) => {
+      if (tile.getAttribute("data-index") == tileIndex) {
+        _setTile(tile);
+      }
+    });
+  };
+
+  return Object.assign(pcPlayer, { playComputerRound });
+};
+
+const Tile = function (i) {
+  let element = document.createElement("div");
+  element.classList.add("tile");
+  element.setAttribute("data-sign", "");
+  element.setAttribute("data-index", i);
+
+  let sign = "";
+
+  return { element, sign };
+};
 
 const gameManager = (() => {
   let mode;
