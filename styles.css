@@ -71,6 +71,8 @@ body {
   aspect-ratio: 1/1;
   border-radius: 50%;
   filter: blur(50px);
+
+  animation: scale alternate 4s ease-in-out infinite;
 }
 
 .circle.red {
@@ -291,5 +293,15 @@ select {
   to {
     transform: 1;
     opacity: 1;
+  }
+}
+
+@keyframes scale {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.3);
   }
 }
